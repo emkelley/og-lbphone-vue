@@ -10,24 +10,54 @@ This is a template for creating apps for the LB Phone FiveM resource. Based on t
 3. CD to the project folder and run `pnpm i`, wait for it to complete.
 
 ## Development Workflow
-This is dependent on your workflow, but here is how I do it:
 
-We do not keep our app source code in the main resource folder of the FiveM server, only built files. To accomodate this, there is a special build configuration option in the `vite.config.ts` file that allows us to build the app to a specific folder. This should be adjusted to your needs - my settings WILL NOT WORK for you.
+We do not keep our app source code in the main resource folder of the FiveM server, only built files. To accommodate this, there is a special build configuration option in the `vite.config.ts` file that allows us to build the app to a specific folder. This should be adjusted to your needs - my settings WILL NOT WORK for you.
 
-## Local Development
+## Browser-Only Development
+
+For quick iteration without needing the game running, you can follow these steps. This is useful, but I recommend in-game development with live reloading for a more realistic experience and access to NUI functions, events, and things defined in Lua files.
 
 1. Run `pnpm run dev`
-2. Go to `http://localhost:3000` in your browser to see the app in your browser.
-3. Comment out line 15 and uncomment line 16 in fxmanifest.lua
-4. Comment out line 25 and uncomment line 24 in client.lua.
-5. Refresh and ensure the resource
+2. Go to `http://localhost:3000` in your browser to see the app.
+
+## In-Game Development with Live Reloading
+
+Development within the game with live reloading is possible but requires a little setup:
+
+### Initial Setup
+
+1. Create a folder for your app in your FiveM server's resources directory. We use `resources/[phone-apps]/app-name` but feel free to use whatever structure works for your project.
+
+2. Copy the `client.lua` and `fxmanifest.lua` files from the `_lua-examples` folder into your new resource folder. These files are pre-configured to support both local development and production modes.
+
+3. Update the `outDir` option in `vite.config.ts` to point to a `dist` folder inside your resource:
+   ```ts
+   outDir: "path/to/your/server/resources/[phone-apps]/app-name/dist"
+   ```
+
+### Running in Local Development Mode
+
+1. Run `pnpm run dev` to start the Vite dev server.
+2. In your resource's `fxmanifest.lua`:
+   - Ensure line 14 (`ui_page "http://localhost:3000"`) is uncommented
+   - Ensure line 15 (`ui_page "dist/index.html"`) is commented out
+3. In your resource's `client.lua`:
+   - Ensure line 24 (`ui = "http://localhost:3000"`) is uncommented
+   - Ensure line 25 (`ui = GetCurrentResourceName() .. "/dist/index.html"`) is commented out
+4. Refresh/ensure your resource in-game.
+
+Changes you make in your source code will now hot-reload in the game.
 
 ## Production Build
 
-1. Run `pnpm run build` to build the app. The build will be in the `dist` folder.
-2. Comment out line 16 and uncomment line 15 in fxmanifest.lua
-3. Comment out line 24 and uncomment line 25 in client.lua.
-4. Refresh and ensure the resource
+1. Run `pnpm run build` to build the app. The build will output to the configured `outDir`.
+2. In your resource's `fxmanifest.lua`:
+   - Comment out line 14 (`ui_page "http://localhost:3000"`)
+   - Uncomment line 15 (`ui_page "dist/index.html"`)
+3. In your resource's `client.lua`:
+   - Comment out line 24 (`ui = "http://localhost:3000"`)
+   - Uncomment line 25 (`ui = GetCurrentResourceName() .. "/dist/index.html"`)
+4. Refresh/ensure your resource in-game.
 
 ## LB Phone Composable
 
