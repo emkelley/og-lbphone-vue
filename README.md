@@ -30,10 +30,34 @@ Development within the game with live reloading is possible but requires a littl
 
 2. Copy the `client.lua` and `fxmanifest.lua` files from the `_lua-examples` folder into your new resource folder. These files are pre-configured to support both local development and production modes.
 
-3. Update the `outDir` option in `vite.config.ts` to point to a `dist` folder inside your resource:
+3. **Important: Update your app identifier consistently.** In `client.lua`, the `identifier` variable (line 1) must be unique to your app and consistent everywhere it's referenced. This identifier is used by LB Phone to track your app. If it doesn't match across your code, things will break (e.g., `SendCustomAppMessage` won't work).
+
+4. Update your app's metadata in both lua files:
+
+   In `fxmanifest.lua`:
+   - `title` - Resource title
+   - `description` - Resource description
+   - `author` - Your name/brand
+
+   In `client.lua`:
+   - `name` - Display name shown in the app store
+   - `description` - App description
+   - `developer` - Your name/brand
+   - `size` - App size in KB (shown in app store)
+
+5. Update the `outDir` option in `vite.config.ts` to point to a `dist` folder inside your resource:
    ```ts
    outDir: "path/to/your/server/resources/[phone-apps]/app-name/dist"
    ```
+
+### App Images
+
+Your app needs an icon and optionally screenshot images for the app store:
+
+- **Icon** (`public/icon.png`) - The app icon displayed in the phone's app drawer and app store. Keep it square (recommended 512x512 or similar).
+- **Screenshots** (`public/screenshot-light.png`, `public/screenshot-dark.png`) - Optional showcase images displayed in the app store. These help users preview your app before downloading.
+
+These files are in the `public` folder and will be copied to `dist` during build. The `client.lua` references them via the `icon` and `images` properties in `AddCustomApp`.
 
 ### Running in Local Development Mode
 
