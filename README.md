@@ -11,7 +11,7 @@ This is a template for creating apps for the LB Phone FiveM resource. Based on t
 
 ## Development Workflow
 
-We do not keep our app source code in the main resource folder of the FiveM server, only built files. To accommodate this, there is a special build configuration option in the `vite.config.ts` file that allows us to build the app to a specific folder. This should be adjusted to your needs - my settings WILL NOT WORK for you.
+[We](https://chaseroleplay.com/) do not keep our app source code in the main resource folder of the FiveM server, only built files. To accommodate this, there is a special build configuration option in the `vite.config.ts` file that allows us to build the app to a specific folder. This should be adjusted to your needs - my settings WILL NOT WORK for you.
 
 ## Browser-Only Development
 
